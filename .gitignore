@@ -8,4 +8,4 @@ logfile
 *.bat
 .mvn
 *.DS_Store
-application-prod.properties
+*.properties
