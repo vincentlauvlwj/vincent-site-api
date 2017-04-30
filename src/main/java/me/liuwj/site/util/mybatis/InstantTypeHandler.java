@@ -1,4 +1,4 @@
-package info.liuwenjun.site.util.mybatis;
+package me.liuwj.site.util.mybatis;
 
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;

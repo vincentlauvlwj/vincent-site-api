@@ -1,6 +1,6 @@
-package info.liuwenjun.site.controller;
+package me.liuwj.site.controller;
 
-import info.liuwenjun.site.model.User;
+import me.liuwj.site.model.User;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

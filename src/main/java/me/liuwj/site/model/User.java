@@ -1,4 +1,4 @@
-package info.liuwenjun.site.model;
+package me.liuwj.site.model;
 
 import lombok.Data;
 

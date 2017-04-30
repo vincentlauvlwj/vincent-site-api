@@ -1,4 +1,4 @@
-package info.liuwenjun.site;
+package me.liuwj.site;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

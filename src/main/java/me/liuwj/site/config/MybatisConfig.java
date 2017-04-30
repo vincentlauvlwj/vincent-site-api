@@ -1,4 +1,4 @@
-package info.liuwenjun.site.config;
+package me.liuwj.site.config;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Configuration;
