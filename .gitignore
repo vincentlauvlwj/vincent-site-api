@@ -1,0 +1,11 @@
+*.iml
+.idea
+logs
+target
+*.ipr
+*.iws
+logfile
+*.bat
+.mvn
+*.DS_Store
+application-prod.properties
