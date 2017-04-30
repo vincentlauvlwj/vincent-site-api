@@ -7,6 +7,9 @@ import lombok.Data;
  */
 @Data
 public class User {
-    private String email;
+    private int id;
     private String name;
+    private String email;
+    private String homepage;
+    private String avatar;
 }

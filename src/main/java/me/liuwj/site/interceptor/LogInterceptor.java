@@ -28,15 +28,15 @@ public class LogInterceptor {
     public void before(JoinPoint joinPoint) {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
-        log.info("URL : " + request.getRequestURL().toString());
-        log.info("HTTP_METHOD : " + request.getMethod());
-        log.info("IP : " + request.getRemoteAddr());
-        log.info("JAVA_METHOD : " + joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
-        log.info("ARGS : " + Arrays.toString(joinPoint.getArgs()));
+        log.info("URL: " + request.getRequestURL().toString());
+        log.info("HTTP_METHOD: " + request.getMethod());
+        log.info("IP: " + request.getRemoteAddr());
+        log.info("JAVA_METHOD: " + joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
+        log.info("ARGS: " + Arrays.toString(joinPoint.getArgs()));
     }
 
     @AfterReturning(pointcut = "requestHandler()", returning = "result")
     public void after(Object result) {
-        log.info("RESPONSE : " + result);
+        log.info("RESPONSE: " + result);
     }
 }

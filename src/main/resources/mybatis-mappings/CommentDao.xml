@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="me.liuwj.site.dao.CommentDao">
+    <resultMap id="resultMap" type="Comment" >
+        <id column="id" property="id" />
+        <result column="page_id" property="pageId" />
+        <result column="content" property="content" />
+        <result column="create_date" property="createDate" />
+        <association property="fromUser" javaType="User" columnPrefix="from_user_" resultMap="me.liuwj.site.dao.UserDao.resultMap" />
+        <association property="toUser" javaType="User" columnPrefix="to_user_" resultMap="me.liuwj.site.dao.UserDao.resultMap" />
+    </resultMap>
+
+    <select id="getComments" resultMap="resultMap" >
+        select comment.*,
+          from_user.name as from_user_name,
+          from_user.email as from_user_email,
+          from_user.homepage as from_user_homepage,
+          from_user.avatar as from_user_avatar,
+          to_user.name as to_user_name,
+          to_user.email as to_user_email,
+          to_user.homepage as to_user_homepage,
+          to_user.avatar as to_user_avatar
+        from site_comment comment
+          left join site_user from_user on comment.from_user_id = from_user.id
+          left join site_user to_user on comment.to_user_id = to_user.id
+        where comment.page_id = #{pageId}
+        order by comment.create_date
+    </select>
+
+    <insert id="createComment" useGeneratedKeys="true" keyProperty="id" >
+        insert into site_comment (page_id, from_user_id, to_user_id, content, create_date)
+        values (#{pageId}, #{fromUser.id}, #{toUser.id}, #{content}, #{createDate})
+    </insert>
+</mapper>
