@@ -15,24 +15,29 @@ public class User {
     private String homepage;
     private String avatar;
 
-    public String getGeneratedAvatar() {
+    public User toFront() {
+        User user = new User();
+        user.id = id;
+        user.name = name;
+        user.email = email;
+
+        if (StringUtils.isBlank(homepage)) {
+            user.homepage = "javascript:void(0);";
+        } else if (!homepage.startsWith("http")) {
+            user.homepage = "http://" + homepage;
+        } else {
+            user.homepage = homepage;
+        }
+
         if (StringUtils.isNotBlank(avatar)) {
-            return avatar;
+            user.avatar = avatar;
         } else if (StringUtils.isNotBlank(email)) {
             String gravatarId = MD5.generate(email.trim().toLowerCase()).toLowerCase();
-            return "https://cdn.v2ex.com/gravatar/" + gravatarId + "?d=retro";
+            user.avatar = "https://cdn.v2ex.com/gravatar/" + gravatarId + "?d=retro";
         } else {
-            return "https://cdn.v2ex.com/gravatar/?d=mm&f=y";
+            user.avatar = "https://cdn.v2ex.com/gravatar/?d=mm&f=y";
         }
-    }
 
-    public String getGeneratedHomepage() {
-        if (StringUtils.isBlank(homepage)) {
-            return "javascript:void(0);";
-        } else if (!homepage.startsWith("http")) {
-            return "http://" + homepage;
-        } else {
-            return homepage;
-        }
+        return user;
     }
 }

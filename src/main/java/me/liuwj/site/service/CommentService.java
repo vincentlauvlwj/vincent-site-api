@@ -34,7 +34,7 @@ public class CommentService {
         Comment comment = new Comment();
         comment.setPageId(req.getPageId());
         comment.setFromUser(userService.createOrUpdateUser(req.getFromUser()));
-        comment.setToUser(req.getToUser());
+        comment.setToUser(req.getToUser() == null || req.getToUser().getId() <= 0 ? null : req.getToUser());
         comment.setContent(req.getContent());
         comment.setCreateDate(new Timestamp(System.currentTimeMillis()));
         commentDao.createComment(comment);
