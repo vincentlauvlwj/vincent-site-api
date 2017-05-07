@@ -2,6 +2,7 @@ package me.liuwj.site.service;
 
 import me.liuwj.site.dao.UserDao;
 import me.liuwj.site.model.User;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +28,7 @@ public class UserService {
         } else {
             user.setName(req.getName());
 
-            if (req.getHomepage() != null && !req.getHomepage().toLowerCase().replace(" ", "").contains("javascript:void(0)")) {
+            if (StringUtils.isNotBlank(req.getHomepage()) && !req.getHomepage().toLowerCase().replace(" ", "").contains("javascript:void(0)")) {
                 user.setHomepage(req.getHomepage());
             }
 
