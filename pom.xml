@@ -14,6 +14,21 @@
     <artifactId>site-api</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <repositories>
+        <repository>
+            <id>huaying</id>
+            <name>Huaying Public Repository</name>
+            <url>http://61.143.225.69:28888/nexus/content/groups/public/</url>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>huaying</id>
+            <name>Huaying Public Repository</name>
+            <url>http://61.143.225.69:28888/nexus/content/groups/public/</url>
+        </pluginRepository>
+    </pluginRepositories>
+    
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
