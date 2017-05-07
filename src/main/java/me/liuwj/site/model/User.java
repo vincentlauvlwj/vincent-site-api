@@ -2,18 +2,24 @@ package me.liuwj.site.model;
 
 import com.huaying.common.utils.codec.MD5;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 
 /**
  * Created by vince on 2017/3/26.
  */
 @Data
+@NoArgsConstructor
 public class User {
     private int id;
     private String name;
     private String email;
     private String homepage;
     private String avatar;
+
+    public User(int id) {
+        this.id = id;
+    }
 
     public User toFront() {
         User user = new User();
