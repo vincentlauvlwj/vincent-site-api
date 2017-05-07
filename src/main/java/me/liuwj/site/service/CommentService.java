@@ -3,6 +3,7 @@ package me.liuwj.site.service;
 import me.liuwj.site.dao.CommentDao;
 import me.liuwj.site.dao.UserDao;
 import me.liuwj.site.model.Comment;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,7 +36,7 @@ public class CommentService {
         comment.setPageId(req.getPageId());
         comment.setFromUser(userService.createOrUpdateUser(req.getFromUser()));
         comment.setToUser(userDao.getUserById(req.getToUser().getId()));
-        comment.setContent(req.getContent());
+        comment.setContent(StringEscapeUtils.escapeHtml4(req.getContent()));
         comment.setCreateDate(new Timestamp(System.currentTimeMillis()));
         commentDao.createComment(comment);
         return comment;
