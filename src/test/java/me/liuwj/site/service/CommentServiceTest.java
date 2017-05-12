@@ -9,6 +9,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -27,6 +29,8 @@ public class CommentServiceTest {
     private CommentDao commentDao;
     @Autowired
     private UserDao userDao;
+    @Autowired
+    private JavaMailSender mailSender;
 
     @Test
     public void createComment() {
@@ -51,5 +55,15 @@ public class CommentServiceTest {
         user.setHomepage("http://t.qq.com/libaocheng9342");
         user.setAvatar("http://app.qlogo.cn/mbloghead/50a8af646221d5c7a222/50");
         userDao.createUser(user);
+    }
+
+    @Test
+    public void testSendEmail() {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("notify@liuwj.me");
+        message.setTo("vincent_lauvl@163.com");
+        message.setSubject("test");
+        message.setText("go to https://www.liuwj.me/");
+        mailSender.send(message);
     }
 }
