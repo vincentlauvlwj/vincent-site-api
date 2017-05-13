@@ -27,6 +27,10 @@ public class Comment {
     private String content;
     private Timestamp createDate;
 
+    public String getUrl() {
+        return "https://www.liuwj.me" + pageId + "#comment-" + id;
+    }
+
     public String getCreateDateStr() {
         return createDate.toLocalDateTime().format(FORMATTER);
     }

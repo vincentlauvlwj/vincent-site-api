@@ -20,6 +20,8 @@ public class CommentService {
     @Autowired
     private UserService userService;
     @Autowired
+    private NotifyService notifyService;
+    @Autowired
     private UserDao userDao;
     @Autowired
     private CommentDao commentDao;
@@ -39,6 +41,8 @@ public class CommentService {
         comment.setContent(StringEscapeUtils.escapeHtml4(req.getContent()));
         comment.setCreateDate(new Timestamp(System.currentTimeMillis()));
         commentDao.createComment(comment);
+
+        notifyService.sendNotifications(comment);
         return comment;
     }
 
