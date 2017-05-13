@@ -20,27 +20,23 @@ public class NotifyService {
 
     @Async
     public void sendNotifications(Comment comment) {
-        try {
-            SimpleMailMessage messageToAdmin = new SimpleMailMessage();
-            messageToAdmin.setFrom("Vincent Notification <notify@liuwj.me>");
-            messageToAdmin.setTo("me@liuwj.me");
-            messageToAdmin.setSubject("Vincent's Site - 新评论提醒");
-            messageToAdmin.setText("有新评论，点击查看：" + comment.getUrl());
-            log.info("sending mail: {}", messageToAdmin);
-            mailSender.send(messageToAdmin);
+        SimpleMailMessage messageToAdmin = new SimpleMailMessage();
+        messageToAdmin.setFrom("Vincent Notification <notify@liuwj.me>");
+        messageToAdmin.setTo("me@liuwj.me");
+        messageToAdmin.setSubject("Vincent's Site - 新评论提醒");
+        messageToAdmin.setText("有新评论，点击查看：" + comment.getUrl());
+        log.info("sending mail: {}", messageToAdmin);
+        mailSender.send(messageToAdmin);
 
-            if (comment.getToUser() != null && StringUtils.isNotBlank(comment.getToUser().getEmail())) {
-                SimpleMailMessage messageToUser = new SimpleMailMessage();
-                messageToUser.setFrom("Vincent Notification <notify@liuwj.me>");
-                messageToUser.setTo(comment.getToUser().getEmail());
-                messageToUser.setSubject("Vincent's Site - 评论回复通知");
-                messageToUser.setText(comment.getToUser().getName() + ", 您好：\n" +
-                        comment.getFromUser() + " 回复了您的评论，点击查看：" + comment.getUrl());
-                log.info("sending mail: {}", messageToUser);
-                mailSender.send(messageToUser);
-            }
-        } catch (Throwable e) {
-            log.error("error occur: ", e);
+        if (comment.getToUser() != null && StringUtils.isNotBlank(comment.getToUser().getEmail())) {
+            SimpleMailMessage messageToUser = new SimpleMailMessage();
+            messageToUser.setFrom("Vincent Notification <notify@liuwj.me>");
+            messageToUser.setTo(comment.getToUser().getEmail());
+            messageToUser.setSubject("Vincent's Site - 评论回复通知");
+            messageToUser.setText(comment.getToUser().getName() + ", 您好：\n" +
+                    comment.getFromUser().getName() + " 回复了您的评论，点击查看：" + comment.getUrl());
+            log.info("sending mail: {}", messageToUser);
+            mailSender.send(messageToUser);
         }
     }
 }
