@@ -88,7 +88,7 @@
         <dependency>
             <groupId>com.huaying.common</groupId>
             <artifactId>huaying-common-utils</artifactId>
-            <version>0.0.5</version>
+            <version>0.0.11</version>
         </dependency>
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>

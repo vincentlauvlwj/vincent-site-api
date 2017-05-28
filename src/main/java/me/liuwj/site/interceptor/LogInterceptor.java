@@ -1,5 +1,6 @@
 package me.liuwj.site.interceptor;
 
+import com.huaying.common.utils.IpUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -30,7 +31,7 @@ public class LogInterceptor {
         HttpServletRequest request = attributes.getRequest();
         log.info("URL: " + request.getRequestURL().toString());
         log.info("HTTP_METHOD: " + request.getMethod());
-        log.info("IP: " + request.getRemoteAddr());
+        log.info("IP: " + IpUtils.getClientIp(request));
         log.info("JAVA_METHOD: " + joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
         log.info("ARGS: " + Arrays.toString(joinPoint.getArgs()));
     }
