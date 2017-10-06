@@ -35,8 +35,14 @@ public class UserService {
 
             User user = userDao.getUserByEmail(req.getEmail());
             if (user == null) {
-                userDao.createUser(req);
-                return req;
+                user = new User();
+                user.setName(req.getName());
+                user.setEmail(req.getEmail());
+                user.setHomepage(req.getHomepage());
+                user.setAvatar(req.getAvatar());
+                user.setGuest(false);
+                user.setRegisterIp(clientIp);
+                userDao.createUser(user);
             } else {
                 user.setName(req.getName());
 
@@ -45,8 +51,8 @@ public class UserService {
                 }
 
                 userDao.updateUser(user);
-                return user;
             }
+            return user;
         }
     }
 }
