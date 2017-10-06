@@ -1,10 +1,12 @@
 package me.liuwj.site.controller;
 
+import com.huaying.common.utils.IpUtils;
 import me.liuwj.site.model.Comment;
 import me.liuwj.site.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -23,7 +25,7 @@ public class CommentController {
     }
 
     @RequestMapping(path = "/comments/", method = RequestMethod.POST)
-    public Comment createComment(@RequestBody Comment comment) {
-        return commentService.createComment(comment).toFront();
+    public Comment createComment(@RequestBody Comment comment, HttpServletRequest httpRequest) {
+        return commentService.createComment(comment, IpUtils.getClientIp(httpRequest)).toFront();
     }
 }

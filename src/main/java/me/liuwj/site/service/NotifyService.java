@@ -25,7 +25,7 @@ public class NotifyService {
         messageToAdmin.setTo("me@liuwj.me");
         messageToAdmin.setSubject("Vincent's Site - 新评论提醒");
         messageToAdmin.setText("有新评论，点击查看：" + comment.getUrl());
-        log.info("sending mail: {}", messageToAdmin);
+        log.info("Sending mail: {}", messageToAdmin);
         mailSender.send(messageToAdmin);
 
         if (comment.getToUser() != null && StringUtils.isNotBlank(comment.getToUser().getEmail())) {
@@ -35,7 +35,7 @@ public class NotifyService {
             messageToUser.setSubject("Vincent's Site - 评论回复通知");
             messageToUser.setText(comment.getToUser().getName() + ", 您好：\n" +
                     comment.getFromUser().getName() + " 回复了您的评论，点击查看：" + comment.getUrl());
-            log.info("sending mail: {}", messageToUser);
+            log.info("Sending mail: {}", messageToUser);
             mailSender.send(messageToUser);
         }
     }

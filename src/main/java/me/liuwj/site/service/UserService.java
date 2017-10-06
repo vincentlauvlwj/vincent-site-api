@@ -17,23 +17,36 @@ public class UserService {
     private UserDao userDao;
 
     @Transactional
-    public User createOrUpdateUser(User req) {
-        Assert.hasText(req.getName());
-        Assert.hasText(req.getEmail());
-
-        User user = userDao.getUserByEmail(req.getEmail());
-        if (user == null) {
-            userDao.createUser(req);
-            return req;
-        } else {
-            user.setName(req.getName());
-
-            if (StringUtils.isNotBlank(req.getHomepage()) && !req.getHomepage().toLowerCase().replace(" ", "").contains("javascript:void(0)")) {
-                user.setHomepage(req.getHomepage());
+    public User createOrUpdateUser(User req, String clientIp) {
+        if (req.isGuest()) {
+            User user = userDao.getGuestUser(clientIp);
+            if (user == null) {
+                user = new User();
+                user.setName("游客" + clientIp);
+                user.setGuest(true);
+                user.setRegisterIp(clientIp);
+                userDao.createUser(user);
             }
-
-            userDao.updateUser(user);
             return user;
+
+        } else {
+            Assert.hasText(req.getName());
+            Assert.hasText(req.getEmail());
+
+            User user = userDao.getUserByEmail(req.getEmail());
+            if (user == null) {
+                userDao.createUser(req);
+                return req;
+            } else {
+                user.setName(req.getName());
+
+                if (StringUtils.isNotBlank(req.getHomepage()) && !req.getHomepage().toLowerCase().replace(" ", "").contains("javascript:void(0)")) {
+                    user.setHomepage(req.getHomepage());
+                }
+
+                userDao.updateUser(user);
+                return user;
+            }
         }
     }
 }

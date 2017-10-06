@@ -16,6 +16,8 @@ public class User {
     private String email;
     private String homepage;
     private String avatar;
+    private boolean guest;
+    private String registerIp;
 
     public User(int id) {
         this.id = id;
@@ -26,6 +28,8 @@ public class User {
         user.id = id;
         user.name = name;
         user.email = hideEmail(email);
+        user.guest = guest;
+        user.registerIp = registerIp;
 
         if (StringUtils.isBlank(homepage)) {
             user.homepage = "javascript:void(0);";

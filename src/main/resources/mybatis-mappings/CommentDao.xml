@@ -6,6 +6,7 @@
         <result column="page_id" property="pageId" />
         <result column="content" property="content" />
         <result column="create_date" property="createDate" />
+        <result column="client_ip" property="clientIp" />
         <association property="fromUser" javaType="User" columnPrefix="from_user_" resultMap="me.liuwj.site.dao.UserDao.resultMap" />
         <association property="toUser" javaType="User" columnPrefix="to_user_" resultMap="me.liuwj.site.dao.UserDao.resultMap" />
     </resultMap>
@@ -28,7 +29,7 @@
     </select>
 
     <insert id="createComment" useGeneratedKeys="true" keyProperty="id" >
-        insert into site_comment (page_id, from_user_id, to_user_id, content, create_date)
-        values (#{pageId}, #{fromUser.id}, #{toUser.id}, #{content}, #{createDate})
+        insert into site_comment (page_id, from_user_id, to_user_id, content, create_date, client_ip)
+        values (#{pageId}, #{fromUser.id}, #{toUser.id}, #{content}, #{createDate}, #{clientIp})
     </insert>
 </mapper>

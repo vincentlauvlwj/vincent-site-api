@@ -26,6 +26,7 @@ public class Comment {
     private User toUser;
     private String content;
     private Timestamp createDate;
+    private String clientIp;
 
     public String getUrl() {
         return "https://www.liuwj.me" + pageId + "#comment-" + id;
@@ -43,6 +44,7 @@ public class Comment {
         comment.toUser = toUser == null ? null : toUser.toFront();
         comment.content = handleEmoji(content);
         comment.createDate = new Timestamp(createDate.getTime());
+        comment.clientIp = clientIp;
         return comment;
     }
 

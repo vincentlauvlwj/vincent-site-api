@@ -11,6 +11,8 @@ public interface UserDao {
 
     User getUserByEmail(String email);
 
+    User getGuestUser(String registerIp);
+
     void updateUser(User user);
 
     void createUser(User user);

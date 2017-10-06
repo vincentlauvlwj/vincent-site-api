@@ -11,7 +11,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.sql.Timestamp;
@@ -23,7 +22,6 @@ import java.time.ZonedDateTime;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = CommentServiceTest.class)
 @SpringBootApplication(scanBasePackages = "me.liuwj.site")
-@ActiveProfiles("prod")
 public class CommentServiceTest {
     @Autowired
     private CommentDao commentDao;

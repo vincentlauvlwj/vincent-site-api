@@ -7,6 +7,8 @@
         <result column="email" property="email" />
         <result column="homepage" property="homepage" />
         <result column="avatar" property="avatar" />
+        <result column="guest" property="guest" />
+        <result column="register_ip" property="registerIp" />
     </resultMap>
 
     <select id="getUserById" resultMap="resultMap" >
@@ -14,7 +16,11 @@
     </select>
 
     <select id="getUserByEmail" resultMap="resultMap" >
-        select * from site_user where email = #{email}
+        select * from site_user where not guest and email = #{email}
+    </select>
+
+    <select id="getGuestUser" resultMap="resultMap" >
+        select * from site_user where guest and register_ip = #{registerIp}
     </select>
 
     <update id="updateUser" >
@@ -27,6 +33,7 @@
     </update>
 
     <insert id="createUser" useGeneratedKeys="true" keyProperty="id" >
-        insert into site_user (`name`, `email`, `homepage`, `avatar`) values (#{name}, #{email}, #{homepage}, #{avatar})
+        insert into site_user (`name`, `email`, `homepage`, `avatar`, `guest`, `register_ip`)
+        values (#{name}, #{email}, #{homepage}, #{avatar}, #{guest}, #{registerIp})
     </insert>
 </mapper>
