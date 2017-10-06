@@ -88,12 +88,7 @@
         <dependency>
             <groupId>com.huaying.common</groupId>
             <artifactId>huaying-common-utils</artifactId>
-            <version>0.0.11</version>
-        </dependency>
-        <dependency>
-            <groupId>com.squareup.okhttp3</groupId>
-            <artifactId>okhttp</artifactId>
-            <version>3.4.1</version>
+            <version>1.4.3</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -114,13 +109,6 @@
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
-                    <encoding>${project.build.sourceEncoding}</encoding>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <configuration>
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>

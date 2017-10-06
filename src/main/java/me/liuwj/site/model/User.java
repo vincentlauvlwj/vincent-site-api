@@ -25,7 +25,7 @@ public class User {
         User user = new User();
         user.id = id;
         user.name = name;
-        user.email = email;
+        user.email = hideEmail(email);
 
         if (StringUtils.isBlank(homepage)) {
             user.homepage = "javascript:void(0);";
@@ -45,5 +45,20 @@ public class User {
         }
 
         return user;
+    }
+
+    private static String hideEmail(String email) {
+        String[] arr = email.split("@");
+        String name = arr[0];
+        String host = arr[1];
+        return name.charAt(0)
+                + name.substring(1).replaceAll(".", "*")
+                + "@"
+                + host;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(hideEmail("wenjun0508@qq.com"));
+        System.out.println(hideEmail("me@liuwj.me"));
     }
 }

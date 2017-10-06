@@ -66,6 +66,8 @@ public class Comment {
     public static void main(String[] args) {
         File dir = new File("D:\\GitRepositories\\vincent-site-web\\themes\\next\\source\\css\\images");
         String[] fileNames = dir.list();
+        assert fileNames != null;
+
         for (String name : fileNames) {
             System.out.println(name);
         }

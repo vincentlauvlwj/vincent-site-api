@@ -14,8 +14,8 @@ import java.util.concurrent.Executor;
  * Created by vince on 2017-05-13.
  */
 @Slf4j
-@Configuration
 @EnableAsync
+@Configuration
 public class AsyncConfig implements AsyncConfigurer {
 
     @Override
