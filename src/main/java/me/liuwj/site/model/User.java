@@ -48,6 +48,9 @@ public class User {
     }
 
     private static String hideEmail(String email) {
+        if (StringUtils.isBlank(email)) {
+            return email;
+        }
         String[] arr = email.split("@");
         String name = arr[0];
         String host = arr[1];
