@@ -21,11 +21,13 @@ public class CommentController {
 
     @RequestMapping(path = "/comments/", method = RequestMethod.GET)
     public List<Comment> getComments(@RequestParam("pageId") String pageId) {
-        return commentService.getComments(pageId).stream().map(Comment::toFront).collect(toList());
+        return commentService.getComments(pageId).stream()
+                .map(c -> c.toFront(true))
+                .collect(toList());
     }
 
     @RequestMapping(path = "/comments/", method = RequestMethod.POST)
     public Comment createComment(@RequestBody Comment comment, HttpServletRequest httpRequest) {
-        return commentService.createComment(comment, IpUtils.getClientIp(httpRequest)).toFront();
+        return commentService.createComment(comment, IpUtils.getClientIp(httpRequest)).toFront(false);
     }
 }

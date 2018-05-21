@@ -36,12 +36,12 @@ public class Comment {
         return createDate.toLocalDateTime().format(FORMATTER);
     }
 
-    public Comment toFront() {
+    public Comment toFront(boolean hideEmail) {
         Comment comment = new Comment();
         comment.id = id;
         comment.pageId = pageId;
-        comment.fromUser = fromUser.toFront();
-        comment.toUser = toUser == null ? null : toUser.toFront();
+        comment.fromUser = fromUser.toFront(hideEmail);
+        comment.toUser = toUser == null ? null : toUser.toFront(true);
         comment.content = handleEmoji(content);
         comment.createDate = new Timestamp(createDate.getTime());
         comment.clientIp = clientIp;

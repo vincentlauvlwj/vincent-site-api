@@ -23,11 +23,11 @@ public class User {
         this.id = id;
     }
 
-    public User toFront() {
+    public User toFront(boolean hideEmail) {
         User user = new User();
         user.id = id;
         user.name = name;
-        user.email = hideEmail(email);
+        user.email = hideEmail ? hideEmail(email) : email;
         user.guest = guest;
         user.registerIp = registerIp;
 
