@@ -53,4 +53,9 @@ public class CommentService {
         Assert.hasText(pageId);
         return commentDao.getComments(pageId);
     }
+
+    public int getCommentsCount(String pageId) {
+        Assert.hasText(pageId);
+        return commentDao.getCommentsCount(pageId);
+    }
 }

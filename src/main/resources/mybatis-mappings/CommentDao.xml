@@ -28,6 +28,10 @@
         order by comment.create_date
     </select>
 
+    <select id="getCommentsCount" resultType="int" >
+        select count(*) from site_comment where page_id = #{pageId}
+    </select>
+
     <insert id="createComment" useGeneratedKeys="true" keyProperty="id" >
         insert into site_comment (page_id, from_user_id, to_user_id, content, create_date, client_ip)
         values (#{pageId}, #{fromUser.id}, #{toUser.id}, #{content}, #{createDate}, #{clientIp})

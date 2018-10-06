@@ -11,5 +11,7 @@ public interface CommentDao {
 
     List<Comment> getComments(String pageId);
 
+    int getCommentsCount(String pageId);
+
     void createComment(Comment comment);
 }
