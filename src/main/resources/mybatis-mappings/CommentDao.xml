@@ -28,8 +28,8 @@
         order by comment.create_date
     </select>
 
-    <select id="getCommentsCount" resultType="int" >
-        select count(*) from site_comment where page_id = #{pageId}
+    <select id="getCommentStats" resultType="CommentStat" >
+        select page_id, count(*) as comment_count from site_comment group by page_id
     </select>
 
     <insert id="createComment" useGeneratedKeys="true" keyProperty="id" >

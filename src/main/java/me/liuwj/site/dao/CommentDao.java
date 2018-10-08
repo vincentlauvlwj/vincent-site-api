@@ -1,6 +1,7 @@
 package me.liuwj.site.dao;
 
 import me.liuwj.site.model.Comment;
+import me.liuwj.site.model.CommentStat;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ public interface CommentDao {
 
     List<Comment> getComments(String pageId);
 
-    int getCommentsCount(String pageId);
+    List<CommentStat> getCommentStats();
 
     void createComment(Comment comment);
 }

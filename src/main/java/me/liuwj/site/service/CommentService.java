@@ -3,6 +3,7 @@ package me.liuwj.site.service;
 import me.liuwj.site.dao.CommentDao;
 import me.liuwj.site.dao.UserDao;
 import me.liuwj.site.model.Comment;
+import me.liuwj.site.model.CommentStat;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,8 +55,7 @@ public class CommentService {
         return commentDao.getComments(pageId);
     }
 
-    public int getCommentsCount(String pageId) {
-        Assert.hasText(pageId);
-        return commentDao.getCommentsCount(pageId);
+    public List<CommentStat> getCommentStats() {
+        return commentDao.getCommentStats();
     }
 }

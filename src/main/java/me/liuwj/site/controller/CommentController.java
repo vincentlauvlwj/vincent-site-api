@@ -2,6 +2,7 @@ package me.liuwj.site.controller;
 
 import com.huaying.common.utils.IpUtils;
 import me.liuwj.site.model.Comment;
+import me.liuwj.site.model.CommentStat;
 import me.liuwj.site.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -33,11 +34,13 @@ public class CommentController {
                 .collect(toList());
     }
 
-    @RequestMapping(path = "/comments/count", method = RequestMethod.GET)
-    public Map<String, Object> getCommentsCount(@RequestParam("pageId") String pageId) {
+    @RequestMapping(path = "/comments/stats", method = RequestMethod.GET)
+    public Map<String, Object> getCommentStats() {
+        List<CommentStat> details = commentService.getCommentStats();
+
         Map<String, Object> result = new LinkedHashMap<>();
-        result.put("pageId", pageId);
-        result.put("commentCount", commentService.getCommentsCount(pageId));
+        result.put("stats", details.stream().mapToInt(CommentStat::getCommentCount).summaryStatistics());
+        result.put("details", details);
         return result;
     }
 }
