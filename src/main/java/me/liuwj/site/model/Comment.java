@@ -42,7 +42,7 @@ public class Comment {
         comment.pageId = pageId;
         comment.fromUser = fromUser.toFront(hideEmail);
         comment.toUser = toUser == null ? null : toUser.toFront(true);
-        comment.content = handleEmoji(content);
+        comment.content = handleEmoji(content).replaceAll("[\r\n]", "<br/>");
         comment.createDate = new Timestamp(createDate.getTime());
         comment.clientIp = clientIp;
         return comment;
