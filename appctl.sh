@@ -1,116 +1,113 @@
-# 将 @@appName@@ 替换成您的应用名
-# 上下线的概念见 https://help.aliyun.com/document_detail/57399.html
+#!/bin/sh
+JAVA_HOME="/usr/java/jdk"
+JAVA_OPTS="-XX:-UseGCOverheadLimit -XX:NewRatio=1 -XX:SurvivorRatio=8 -XX:+UseSerialGC"
+CONSOLE_LOG="/dev/null"
+RUNNING_USER=root
+APP_HOME=/opt/tudaxia/test/WEB-INF
+APP_MAINCLASS=com.tudaxia.test.TestMain
 
-#!/bin/bash
-PROG_NAME=$0
-ACTION=$1
-ONLINE_OFFLINE_WAIT_TIME=6  # 实例上下线的等待时间
-APP_START_TIMEOUT=50     # 等待应用启动的时间
-APP_PORT=8080          # 应用端口
-HEALTH_CHECK_URL=http://127.0.0.1:${APP_PORT}/@@appName@@  # 应用健康检查URL
-HEALTH_CHECK_FILE_DIR=/home/admin/status   # 脚本会在这个目录下生成nginx-status文件
-APP_HOME=/home/admin/@@appName@@  # 从package.tgz中解压出来的jar包放到这个目录下
-WAR_NAME=@@appName@@.war # jar包的名字
-APP_LOG=${APP_HOME}/logs/app.log # 应用的日志文件
-# 创建出相关目录
-mkdir -p ${HEALTH_CHECK_FILE_DIR}  
-mkdir -p ${APP_HOME}
-mkdir -p ${APP_HOME}/logs
-usage() {
-    echo "Usage: $PROG_NAME {start|stop|online|offline|restart}"
-    exit 2
-}
-online() {
-    # 挂回SLB
-    touch -m $HEALTH_CHECK_FILE_DIR/nginx-status || exit 1
-    echo "wait app online in ${ONLINE_OFFLINE_WAIT_TIME} seconds..."
-    sleep ${ONLINE_OFFLINE_WAIT_TIME} 
-}
-offline() {
-    # 摘除SLB
-    rm -f $HEALTH_CHECK_FILE_DIR/nginx-status || exit 1
-    echo "wait app offline in ${ONLINE_OFFLINE_WAIT_TIME} seconds..."
-    sleep ${ONLINE_OFFLINE_WAIT_TIME}
-}
-health_check() {
-    exptime=0
-    echo "checking ${HEALTH_CHECK_URL}"
-    while true
-    do
-        status_code=`/usr/bin/curl -L -o /dev/null --connect-timeout 5 -s -w %{http_code}  ${HEALTH_CHECK_URL}`
-        if [ x$status_code != x200 ];then
-            sleep 1
-            ((exptime++))
-            echo -n -e "\rWait app to pass health check: $exptime..."
-        else
-            break
-        fi
-        if [ $exptime -gt ${APP_START_TIMEOUT} ]; then
-            echo
-            echo 'app start failed'
-            exit 1
-        fi
-    done
-    echo "check ${HEALTH_CHECK_URL} success"
-}
-start_application() {
-    rm -f /usr/local/apache-tomcat/webapps/*
-    cp /home/admin/@@appName@@/@@appName@@.war /usr/local/apache-tomcat/webapps/
-    echo 'starting the tomcat'
-    rm -f /usr/local/apache-tomcat/logs/catalina.out
-    /usr/local/apache-tomcat/bin/catalina.sh start
-    exptime=0
-    while true
-    do
-          ret=`fgrep "Server startup in" /usr/local/apache-tomcat/logs/catalina.out`
-          if [ -z "$ret" ]; then
-              sleep 1
-              ((exptime++))
-              echo -n -e  "\rWait Tomcat Start: $exptime..."
-          else
-             echo 'has server startup'
-             break
-          fi
-    done
-}
-stop_application() {
-    echo 'stopping the tomcat'
+CLASSPATH=$APP_HOME/classes
+for i in "$APP_HOME"/lib/*.jar; do
+    CLASSPATH="$CLASSPATH":"$i"
+done
 
-    PID=`ps ax | grep 'tomcat' | grep -v grep | awk '{print $1}'`
-    echo ${PID}
-    if [[ ! -z "$PID" ]]; then
-    kill -15 $PID
+psid=0
+
+checkpid() {
+    javaps=`$JAVA_HOME/bin/jps -l | grep $APP_MAINCLASS`
+
+    if [ -n "$javaps" ]; then
+        psid=`echo $javaps | awk '{print $1}'`
     else
-     echo 'tomcat is not running'
+        psid=0
     fi
 }
+
 start() {
-    start_application
-    health_check
-    online
+    checkpid
+
+    if [ $psid -ne 0 ]; then
+        echo "================================"
+        echo "warn: $APP_MAINCLASS already started! (pid=$psid)"
+        echo "================================"
+    else
+        echo -n "Starting $APP_MAINCLASS ..."
+        JAVA_CMD="nohup $JAVA_HOME/bin/java $JAVA_OPTS -classpath $CLASSPATH $APP_MAINCLASS > $CONSOLE_LOG 2>&1 &"
+        su - $RUNNING_USER -c "$JAVA_CMD"
+        checkpid
+        if [ $psid -ne 0 ]; then
+            echo "(pid=$psid) [OK]"
+        else
+            echo "[Failed]"
+        fi
+    fi
 }
+
 stop() {
-    offline
-    stop_application
+    checkpid
+
+    if [ $psid -ne 0 ]; then
+        echo -n "Stopping $APP_MAINCLASS ...(pid=$psid) "
+        su - $RUNNING_USER -c "kill $psid"
+        if [ $? -eq 0 ]; then
+            echo "[OK]"
+        else
+            echo "[Failed]"
+        fi
+
+        checkpid
+        if [ $psid -ne 0 ]; then
+            stop
+        fi
+    else
+        echo "================================"
+        echo "warn: $APP_MAINCLASS is not running"
+        echo "================================"
+    fi
 }
-case "$ACTION" in
-    start)
+
+status() {
+    checkpid
+
+    if [ $psid -ne 0 ];  then
+        echo "$APP_MAINCLASS is running! (pid=$psid)"
+    else
+        echo "$APP_MAINCLASS is not running"
+    fi
+}
+
+info() {
+    echo "System Information:"
+    echo "****************************"
+    echo `head -n 1 /etc/issue`
+    echo `uname -a`
+    echo
+    echo "JAVA_HOME=$JAVA_HOME"
+    echo `$JAVA_HOME/bin/java -version`
+    echo
+    echo "APP_HOME=$APP_HOME"
+    echo "APP_MAINCLASS=$APP_MAINCLASS"
+    echo "****************************"
+}
+
+case "$1" in
+    'start')
         start
-    ;;
-    stop)
-        stop
-    ;;
-    online)
-        online
-    ;;
-    offline)
-        offline
-    ;;
-    restart)
-        stop
-        start
-    ;;
+        ;;
+    'stop')
+       stop
+       ;;
+    'restart')
+       stop
+       start
+       ;;
+    'status')
+       status
+       ;;
+    'info')
+       info
+       ;;
     *)
-        usage
-    ;;
-esac
+       echo "Usage: $0 {start|stop|restart|status|info}"
+       exit 1
+ 
