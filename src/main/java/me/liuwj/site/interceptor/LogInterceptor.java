@@ -1,7 +1,7 @@
 package me.liuwj.site.interceptor;
 
-import com.huaying.common.utils.IpUtils;
 import lombok.extern.slf4j.Slf4j;
+import me.liuwj.site.utils.IpUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;

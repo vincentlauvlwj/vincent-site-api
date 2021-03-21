@@ -1,9 +1,9 @@
 package me.liuwj.site.controller;
 
-import com.huaying.common.utils.IpUtils;
 import me.liuwj.site.model.Comment;
 import me.liuwj.site.model.CommentStat;
 import me.liuwj.site.service.CommentService;
+import me.liuwj.site.utils.IpUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

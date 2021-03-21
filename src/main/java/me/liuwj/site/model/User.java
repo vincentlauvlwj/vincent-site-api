@@ -1,8 +1,8 @@
 package me.liuwj.site.model;
 
-import com.huaying.common.utils.codec.MD5;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import me.liuwj.site.utils.MD5;
 import org.apache.commons.lang3.StringUtils;
 
 /**
