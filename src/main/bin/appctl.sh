@@ -15,6 +15,9 @@
 #  limitations under the License.
 # ----------------------------------------------------------------------------
 
+# custom settings...
+JAVA_OPTS="-XX:-UseGCOverheadLimit -XX:NewRatio=1 -XX:SurvivorRatio=8 -XX:+UseSerialGC"
+APP_MAINCLASS="com.tudaxia.test.TestMain"
 
 # resolve links - $0 may be a softlink
 PRG="$0"
@@ -108,11 +111,10 @@ if $cygwin; then
   [ -n "$BASEDIR" ] && BASEDIR=`cygpath --path --windows "$BASEDIR"`
 fi
 
-JAVA_OPTS="-XX:-UseGCOverheadLimit -XX:NewRatio=1 -XX:SurvivorRatio=8 -XX:+UseSerialGC"
-RUNNING_USER=root
-APP_HOME=/opt/tudaxia/test/WEB-INF
-APP_MAINCLASS=com.tudaxia.test.TestMain
-
+run() {
+  cd $BASEDIR
+  exec $JAVACMD $JAVA_OPTS -classpath $CLASSPATH $APP_MAINCLASS
+}
 
 start() {
   pid=`cat $PID_FILE`
@@ -125,7 +127,8 @@ start() {
     STDOUT=$BASEDIR/logs/service_stdout.log
     [ -e $BASEDIR/logs ] || mkdir $BASEDIR/logs -p
 
-    nohup $JAVACMD $JAVA_OPTS -classpath $CLASSPATH $APP_MAINCLASS > STDOUT 2>&1 &
+    cd $BASEDIR
+    nohup $JAVACMD $JAVA_OPTS -classpath $CLASSPATH $APP_MAINCLASS > $STDOUT 2>&1 &
     echo $! > $PID_FILE
 
     pid=`cat $PID_FILE`
@@ -166,37 +169,40 @@ status() {
 }
 
 info() {
-    echo "System Information:"
-    echo "****************************"
-    echo `head -n 1 /etc/issue`
-    echo `uname -a`
-    echo
-    echo "JAVA_HOME=$JAVA_HOME"
-    echo `$JAVA_HOME/bin/java -version`
-    echo
-    echo "APP_HOME=$APP_HOME"
-    echo "APP_MAINCLASS=$APP_MAINCLASS"
-    echo "****************************"
+  echo "System Information:"
+  echo "****************************"
+  echo `head -n 1 /etc/issue`
+  echo `uname -a`
+  echo
+  echo "JAVA_HOME=$JAVA_HOME"
+  echo `$JAVA_HOME/bin/java -version`
+  echo
+  echo "APP_HOME=$APP_HOME"
+  echo "APP_MAINCLASS=$APP_MAINCLASS"
+  echo "****************************"
 }
 
 case "$1" in
-    'start')
-        start
-        ;;
-    'stop')
-       stop
-       ;;
-    'restart')
-       stop
-       start
-       ;;
-    'status')
-       status
-       ;;
-    'info')
-       info
-       ;;
-    *)
-       echo "Usage: $0 {start|stop|restart|status|info}"
-       exit 1
+  'run')
+    run
+    ;;
+  'start')
+    start
+    ;;
+  'stop')
+    stop
+    ;;
+  'restart')
+    stop
+    start
+    ;;
+  'status')
+    status
+    ;;
+  'info')
+    info
+    ;;
+  *)
+    echo "Usage: $0 {start|stop|restart|status|info}"
+    exit 1
  
