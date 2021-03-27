@@ -16,8 +16,8 @@
 # ----------------------------------------------------------------------------
 
 # custom settings...
-JAVA_OPTS="-XX:-UseGCOverheadLimit -XX:NewRatio=1 -XX:SurvivorRatio=8 -XX:+UseSerialGC"
 APP_MAINCLASS="me.liuwj.site.Application"
+JAVA_OPTS="-XX:-UseGCOverheadLimit -XX:NewRatio=1 -XX:SurvivorRatio=8 -XX:+UseSerialGC"
 
 # resolve links - $0 may be a softlink
 PRG="$0"
@@ -111,9 +111,10 @@ fi
 
 # For Cygwin, switch paths to Windows format before running java
 if $cygwin; then
-  [ -n "$CLASSPATH" ] && CLASSPATH=$(cygpath --path --windows "$CLASSPATH")
-  [ -n "$JAVA_HOME" ] && JAVA_HOME=$(cygpath --path --windows "$JAVA_HOME")
   [ -n "$BASEDIR" ] && BASEDIR=$(cygpath --path --windows "$BASEDIR")
+  [ -n "$JAVACMD" ] && JAVACMD=$(cygpath --path --windows "$JAVACMD")
+  [ -n "$CLASSPATH" ] && CLASSPATH=$(cygpath --path --windows "$CLASSPATH")
+  [ -n "$PID_FILE" ] && PID_FILE=$(cygpath --path --windows "$PID_FILE")
 fi
 
 run() {
