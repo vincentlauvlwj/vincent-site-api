@@ -129,9 +129,9 @@ start() {
     echo "================================"
   else
     echo "Starting application $APP_MAINCLASS..."
-    [ -e "$BASEDIR"/logs ] || mkdir "$BASEDIR"/logs -p
+    [ -e "$BASEDIR"/logs ] || mkdir -p "$BASEDIR"/logs
     STDOUT=$BASEDIR/logs/service_stdout.log
-    mv "$STDOUT" "$STDOUT.$(date "+%Y%m%d%H%M%S")"
+    [ -e "$STDOUT" ] && mv "$STDOUT" "$STDOUT.$(date "+%Y%m%d%H%M%S")"
 
     cd "$BASEDIR"
     nohup "$JAVACMD" $JAVA_OPTS -classpath "$CLASSPATH" "$APP_MAINCLASS" > "$STDOUT" 2>&1 &
