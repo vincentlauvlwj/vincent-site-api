@@ -26,7 +26,7 @@
             <directory>./src/main/resources</directory>
             <outputDirectory>/config</outputDirectory>
             <includes>
-                <include>application.properties</include>
+                <include>application-example.properties</include>
             </includes>
         </fileSet>
     </fileSets>
