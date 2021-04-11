@@ -17,7 +17,7 @@
 
 # custom settings...
 APP_MAINCLASS="me.liuwj.site.Application"
-JAVA_OPTS="-XX:-UseGCOverheadLimit -XX:NewRatio=1 -XX:SurvivorRatio=8 -XX:+UseSerialGC"
+JAVA_OPTS="-Djava.net.useSystemProxies=true -XX:-UseGCOverheadLimit -XX:NewRatio=1 -XX:SurvivorRatio=8 -XX:+UseSerialGC"
 
 # resolve links - $0 may be a softlink
 PRG="$0"
