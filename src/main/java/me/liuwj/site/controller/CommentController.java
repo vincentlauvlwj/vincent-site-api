@@ -22,19 +22,19 @@ public class CommentController {
     @Autowired
     private CommentService commentService;
 
-    @RequestMapping(path = "/comments/", method = RequestMethod.POST)
-    public Comment createComment(@RequestBody Comment comment, HttpServletRequest httpRequest) {
-        return commentService.createComment(comment, IpUtils.getClientIp(httpRequest)).toFront(false);
+    @RequestMapping(path = "/api/comments", method = RequestMethod.POST)
+    public Comment createComment(@RequestBody Comment comment) {
+        return commentService.createComment(comment, IpUtils.getCurrentClientIp()).toFront(false);
     }
 
-    @RequestMapping(path = "/comments/", method = RequestMethod.GET)
+    @RequestMapping(path = "/api/comments", method = RequestMethod.GET)
     public List<Comment> getComments(@RequestParam("pageId") String pageId) {
         return commentService.getComments(pageId).stream()
                 .map(c -> c.toFront(true))
                 .collect(toList());
     }
 
-    @RequestMapping(path = "/comments/stats", method = RequestMethod.GET)
+    @RequestMapping(path = "/api/comments/stats", method = RequestMethod.GET)
     public Map<String, Object> getCommentStats() {
         List<CommentStat> details = commentService.getCommentStats();
 

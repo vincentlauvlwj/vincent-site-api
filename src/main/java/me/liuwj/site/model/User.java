@@ -43,9 +43,9 @@ public class User {
             user.avatar = avatar;
         } else if (StringUtils.isNotBlank(email)) {
             String gravatarId = MD5.generate(email.trim().toLowerCase()).toLowerCase();
-            user.avatar = "https://cdn.v2ex.com/gravatar/" + gravatarId + "?d=retro";
+            user.avatar = "https://www.liuwj.me/gravatar/" + gravatarId + "?d=retro";
         } else {
-            user.avatar = "https://cdn.v2ex.com/gravatar/?d=mm&f=y";
+            user.avatar = "https://www.liuwj.me/gravatar/default?d=mm&f=y";
         }
 
         return user;
