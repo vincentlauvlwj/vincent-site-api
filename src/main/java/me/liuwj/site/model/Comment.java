@@ -73,13 +73,13 @@ public class Comment {
         for (String name : fileNames) {
             System.out.println(name);
         }
-        System.out.println("total: " + fileNames.length);
 
+        System.out.println("total: " + fileNames.length);
         System.out.println(Arrays.stream(fileNames).map(s -> s.replace(".png", "")).collect(joining(",")));
 
         Arrays.stream(fileNames)
-                .map(s -> s.replace(".png", ""))
-                .map(s -> ".emoji-" + s + "{background-image:url('images/" + s + ".png');}")
-                .forEach(System.out::print);
+            .map(s -> s.replace(".png", ""))
+            .map(s -> ".emoji-" + s + "{background-image:url('images/" + s + ".png');}")
+            .forEach(System.out::print);
     }
 }

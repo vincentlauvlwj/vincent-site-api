@@ -5,9 +5,12 @@ import me.liuwj.site.model.CommentStat;
 import me.liuwj.site.service.CommentService;
 import me.liuwj.site.utils.IpUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,8 +33,8 @@ public class CommentController {
     @RequestMapping(path = "/api/comments", method = RequestMethod.GET)
     public List<Comment> getComments(@RequestParam("pageId") String pageId) {
         return commentService.getComments(pageId).stream()
-                .map(c -> c.toFront(true))
-                .collect(toList());
+            .map(c -> c.toFront(true))
+            .collect(toList());
     }
 
     @RequestMapping(path = "/api/comments/stats", method = RequestMethod.GET)

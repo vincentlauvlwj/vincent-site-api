@@ -1,4 +1,4 @@
-package me.liuwj.site.config;
+package me.liuwj.site.configuration;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;

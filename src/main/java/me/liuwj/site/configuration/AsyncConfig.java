@@ -1,4 +1,4 @@
-package me.liuwj.site.config;
+package me.liuwj.site.configuration;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;

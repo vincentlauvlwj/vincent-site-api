@@ -32,6 +32,7 @@ public class CommentService {
         Assert.hasText(req.getPageId());
         Assert.hasText(req.getContent());
         Assert.notNull(req.getFromUser());
+
         if (!req.getFromUser().isGuest()) {
             Assert.hasText(req.getFromUser().getName());
             Assert.hasText(req.getFromUser().getEmail());
@@ -40,7 +41,7 @@ public class CommentService {
         Comment comment = new Comment();
         comment.setPageId(req.getPageId());
         comment.setFromUser(userService.createOrUpdateUser(req.getFromUser(), clientIp));
-        comment.setToUser(userDao.getUserById(req.getToUser().getId()));
+        comment.setToUser(req.getToUser() == null ? null : userDao.getUserById(req.getToUser().getId()));
         comment.setContent(StringEscapeUtils.escapeHtml4(req.getContent()));
         comment.setCreateDate(new Timestamp(System.currentTimeMillis()));
         comment.setClientIp(clientIp);

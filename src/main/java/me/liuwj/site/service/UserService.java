@@ -27,6 +27,7 @@ public class UserService {
                 user.setRegisterIp(clientIp);
                 userDao.createUser(user);
             }
+
             return user;
 
         } else {
@@ -38,20 +39,18 @@ public class UserService {
                 user = new User();
                 user.setName(req.getName());
                 user.setEmail(req.getEmail());
-                user.setHomepage(req.getHomepage());
-                user.setAvatar(req.getAvatar());
+                user.setHomepage(StringUtils.defaultIfBlank(req.getHomepage(), null));
+                user.setAvatar(StringUtils.defaultIfBlank(req.getAvatar(), null));
                 user.setGuest(false);
                 user.setRegisterIp(clientIp);
                 userDao.createUser(user);
             } else {
                 user.setName(req.getName());
-
-                if (StringUtils.isNotBlank(req.getHomepage()) && !req.getHomepage().toLowerCase().replace(" ", "").contains("javascript:void(0)")) {
-                    user.setHomepage(req.getHomepage());
-                }
-
+                user.setHomepage(StringUtils.defaultIfBlank(req.getHomepage(), user.getHomepage()));
+                user.setAvatar(StringUtils.defaultIfBlank(req.getAvatar(), user.getAvatar()));
                 userDao.updateUser(user);
             }
+
             return user;
         }
     }

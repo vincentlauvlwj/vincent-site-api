@@ -38,6 +38,6 @@ public class LogInterceptor {
 
     @AfterReturning(pointcut = "requestHandler()", returning = "result")
     public void after(Object result) {
-        log.info("RESPONSE: " + result);
+        // log.info("RESPONSE: " + result);
     }
 }

@@ -31,12 +31,11 @@ public class User {
         user.guest = guest;
         user.registerIp = registerIp;
 
-        if (StringUtils.isBlank(homepage)) {
-            user.homepage = "javascript:void(0);";
-        } else if (!homepage.startsWith("http")) {
-            user.homepage = "http://" + homepage;
-        } else {
+        String homepage = StringUtils.defaultIfBlank(this.homepage, null);
+        if (homepage == null || homepage.startsWith("http")) {
             user.homepage = homepage;
+        } else {
+            user.homepage = "http://" + homepage;
         }
 
         if (StringUtils.isNotBlank(avatar)) {
@@ -55,13 +54,14 @@ public class User {
         if (StringUtils.isBlank(email)) {
             return email;
         }
+
         String[] arr = email.split("@");
         String name = arr[0];
         String host = arr[1];
         return name.charAt(0)
-                + name.substring(1).replaceAll(".", "*")
-                + "@"
-                + host;
+            + StringUtils.repeat("*", name.length() - 1)
+            + "@"
+            + host;
     }
 
     public static void main(String[] args) {
