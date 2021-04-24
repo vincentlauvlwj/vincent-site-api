@@ -42,7 +42,7 @@ public class User {
             user.avatar = avatar;
         } else if (StringUtils.isNotBlank(email)) {
             String gravatarId = MD5.generate(email.trim().toLowerCase()).toLowerCase();
-            user.avatar = "https://www.liuwj.me/gravatar/" + gravatarId + "?d=retro";
+            user.avatar = "https://www.liuwj.me/gravatar/" + gravatarId + "?d=monsterid";
         } else {
             user.avatar = "https://www.liuwj.me/gravatar/default?d=mm&f=y";
         }
