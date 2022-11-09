@@ -165,9 +165,13 @@ stop() {
 
 status() {
   if [ -s "$PID_FILE" ]; then
-    echo "Status: Application $APP_MAINCLASS is running! (pid=$(cat "$PID_FILE"))"
+    if ps -p "$(cat "$PID_FILE")" > /dev/null; then
+      echo "Status: Application $APP_MAINCLASS is running. (pid=$(cat "$PID_FILE"))"
+    else
+      echo "Status: Application $APP_MAINCLASS is DOWN!!! (pid=$(cat "$PID_FILE"))"
+    fi
   else
-    echo "Status: Application $APP_MAINCLASS is not running"
+    echo "Status: Application $APP_MAINCLASS is not running."
   fi
 }
 
