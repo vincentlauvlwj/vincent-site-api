@@ -122,26 +122,42 @@ run() {
   exec "$JAVACMD" $JAVA_OPTS -classpath "$CLASSPATH" "$APP_MAINCLASS"
 }
 
+do_start() {
+  echo "Starting application $APP_MAINCLASS..."
+  [ -e "$BASEDIR"/logs ] || mkdir -p "$BASEDIR"/logs
+  STDOUT=$BASEDIR/logs/service_stdout.log
+  [ -e "$STDOUT" ] && mv "$STDOUT" "$STDOUT.$(date "+%Y%m%d%H%M%S")"
+
+  cd "$BASEDIR"
+  nohup "$JAVACMD" $JAVA_OPTS -classpath "$CLASSPATH" "$APP_MAINCLASS" > "$STDOUT" 2>&1 &
+
+  if [ $? -eq 0 ]; then
+    echo $! > "$PID_FILE"
+    echo "[OK] (pid=$(cat "$PID_FILE"))"
+  else
+    echo "[Failed]"
+  fi
+}
+
+do_stop() {
+  echo "Stopping application $APP_MAINCLASS... (pid=$(cat "$PID_FILE"))"
+  kill "$(cat "$PID_FILE")"
+
+  if [ $? -eq 0 ]; then
+    echo "[OK]"
+    rm -f "$PID_FILE"
+  else
+    echo "[Failed]"
+  fi
+}
+
 start() {
   if [ -s "$PID_FILE" ] && ps -p "$(cat "$PID_FILE")" > /dev/null; then
     echo "================================"
     echo "Warn: Application $APP_MAINCLASS is already started. (pid=$(cat "$PID_FILE"))"
     echo "================================"
   else
-    echo "Starting application $APP_MAINCLASS..."
-    [ -e "$BASEDIR"/logs ] || mkdir -p "$BASEDIR"/logs
-    STDOUT=$BASEDIR/logs/service_stdout.log
-    [ -e "$STDOUT" ] && mv "$STDOUT" "$STDOUT.$(date "+%Y%m%d%H%M%S")"
-
-    cd "$BASEDIR"
-    nohup "$JAVACMD" $JAVA_OPTS -classpath "$CLASSPATH" "$APP_MAINCLASS" > "$STDOUT" 2>&1 &
-
-    if [ $? -eq 0 ]; then
-      echo $! > "$PID_FILE"
-      echo "[OK] (pid=$(cat "$PID_FILE"))"
-    else
-      echo "[Failed]"
-    fi
+    do_start
   fi
 }
 
@@ -156,15 +172,7 @@ stop() {
     echo "================================"
     rm -f "$PID_FILE"
   else
-    echo "Stopping application $APP_MAINCLASS... (pid=$(cat "$PID_FILE"))"
-    kill "$(cat "$PID_FILE")"
-
-    if [ $? -eq 0 ]; then
-      echo "[OK]"
-      rm -f "$PID_FILE"
-    else
-      echo "[Failed]"
-    fi
+    do_stop
   fi
 }
 
