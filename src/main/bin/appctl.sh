@@ -146,8 +146,17 @@ start() {
 }
 
 stop() {
-  if [ -s "$PID_FILE" ]; then
-    echo "Stopping application $APP_MAINCLASS...(pid=$(cat "$PID_FILE"))"
+  if [ ! -s "$PID_FILE" ]; then
+    echo "================================"
+    echo "Warn: Application $APP_MAINCLASS is not running."
+    echo "================================"
+  elif ! ps -p "$(cat "$PID_FILE")" > /dev/null; then
+    echo "================================"
+    echo "Warn: Application $APP_MAINCLASS is already DOWN!!! (pid=$(cat "$PID_FILE"))"
+    echo "================================"
+    rm -f "$PID_FILE"
+  else
+    echo "Stopping application $APP_MAINCLASS... (pid=$(cat "$PID_FILE"))"
     kill "$(cat "$PID_FILE")"
 
     if [ $? -eq 0 ]; then
@@ -156,10 +165,6 @@ stop() {
     else
       echo "[Failed]"
     fi
-  else
-    echo "================================"
-    echo "Warn: Application $APP_MAINCLASS is not running"
-    echo "================================"
   fi
 }
 
