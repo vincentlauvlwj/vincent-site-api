@@ -123,9 +123,9 @@ run() {
 }
 
 start() {
-  if [ -s "$PID_FILE" ]; then
+  if [ -s "$PID_FILE" ] && ps -p "$(cat "$PID_FILE")" > /dev/null; then
     echo "================================"
-    echo "Warn: Application $APP_MAINCLASS is already started! (pid=$(cat "$PID_FILE"))"
+    echo "Warn: Application $APP_MAINCLASS is already started. (pid=$(cat "$PID_FILE"))"
     echo "================================"
   else
     echo "Starting application $APP_MAINCLASS..."
