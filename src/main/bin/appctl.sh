@@ -1,6 +1,6 @@
 #!/bin/sh
 # ----------------------------------------------------------------------------
-#  Copyright 2021 Vincent Lau.
+#  Copyright 2022 Vincent Lau.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -161,6 +161,14 @@ start() {
   fi
 }
 
+restart() {
+  if [ -s "$PID_FILE" ] && ps -p "$(cat "$PID_FILE")" > /dev/null; then
+    do_stop
+  fi
+
+  do_start
+}
+
 stop() {
   if [ ! -s "$PID_FILE" ]; then
     echo "================================"
@@ -212,8 +220,7 @@ case "$1" in
     stop
     ;;
   'restart')
-    stop
-    start
+    restart
     ;;
   'status')
     status
