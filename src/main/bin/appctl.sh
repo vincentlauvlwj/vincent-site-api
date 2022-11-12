@@ -18,6 +18,7 @@
 # custom settings...
 APP_MAINCLASS="me.liuwj.site.Application"
 JAVA_OPTS="-XX:+UseSerialGC -XX:-UseGCOverheadLimit -XX:NewRatio=1 -XX:SurvivorRatio=8"
+HEALTH_CHECK_URL="http://127.0.0.1:8080/api/comments/stats"
 
 # resolve links - $0 may be a softlink
 PRG="$0"
@@ -222,6 +223,13 @@ status() {
     echo "Status: Application $APP_MAINCLASS is DOWN!!! (pid=$(cat "$PID_FILE"))"
   else
     echo "Status: Application $APP_MAINCLASS is running. (pid=$(cat "$PID_FILE"))"
+    if [ -n "$HEALTH_CHECK_URL" ]; then
+      if curl --silent --fail --max-time 5 "$HEALTH_CHECK_URL" > /dev/null; then
+        echo "Health check: [OK]"
+      else
+        echo "Health check: [Failed]"
+      fi
+    fi
   fi
 }
 
