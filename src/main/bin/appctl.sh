@@ -194,6 +194,13 @@ start() {
 }
 
 restart() {
+  if [ -n "$1" ] && [ "$1" == "--skip-if-healthy" ]; then
+    if [ -n "$HEALTH_CHECK_URL" ] && curl --silent --fail --max-time 5 "$HEALTH_CHECK_URL" > /dev/null; then
+      echo "Health check: [OK], skip restart."
+      return 0
+    fi
+  fi
+
   if [ -s "$PID_FILE" ] && ps -p "$(cat "$PID_FILE")" > /dev/null; then
     do_stop
   fi
@@ -250,22 +257,22 @@ info() {
 
 case "$1" in
   'run')
-    run
+    run "${@:2}"
     ;;
   'start')
-    start
+    start "${@:2}"
     ;;
   'stop')
-    stop
+    stop "${@:2}"
     ;;
   'restart')
-    restart
+    restart "${@:2}"
     ;;
   'status')
-    status
+    status "${@:2}"
     ;;
   'info')
-    info
+    info "${@:2}"
     ;;
   *)
     echo "Usage: $0 {run|start|stop|restart|status|info}"
