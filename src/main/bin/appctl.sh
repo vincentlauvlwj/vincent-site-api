@@ -141,14 +141,43 @@ do_start() {
 
 do_stop() {
   echo "Stopping application $APP_MAINCLASS... (pid=$(cat "$PID_FILE"))"
-  kill "$(cat "$PID_FILE")"
+  echo -n "[kill -15]"
+  kill -15 "$(cat "$PID_FILE")"
 
-  if [ $? -eq 0 ]; then
+  if wait_for_stop; then
     echo "[OK]"
     rm -f "$PID_FILE"
   else
-    echo "[Failed]"
+    echo -n "[kill -9]"
+    kill -9 "$(cat "$PID_FILE")"
+
+    if wait_for_stop; then
+      echo "[OK]"
+      rm -f "$PID_FILE"
+    else
+      echo "[Failed]"
+    fi
   fi
+}
+
+wait_for_stop() {
+  wait_seconds=10
+
+  while [ wait_seconds -ge 0 ]; do
+    if ! ps -p "$(cat "$PID_FILE")" > /dev/null; then
+      return 0
+    fi
+
+    if [ wait_seconds -gt 0 ]; then
+      echo -n "."
+      sleep 1
+    fi
+
+    wait_seconds=$(expr wait_seconds - 1)
+  done
+
+  # returning non-zero value means the function fails.
+  return 1
 }
 
 start() {
