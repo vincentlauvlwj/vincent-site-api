@@ -134,6 +134,8 @@ do_start() {
   if [ $? -eq 0 ]; then
     echo $! > "$PID_FILE"
     echo "[OK] (pid=$(cat "$PID_FILE"))"
+    echo "You can check the application's standard output by:"
+    echo "  tail -f $STDOUT"
   else
     echo "[Failed]"
   fi
