@@ -16,8 +16,8 @@
 # ----------------------------------------------------------------------------
 
 # custom settings...
-APP_MAINCLASS="me.liuwj.site.Application"
 JAVA_OPTS="-XX:+UseSerialGC -XX:-UseGCOverheadLimit -XX:NewRatio=1 -XX:SurvivorRatio=8"
+APP_MAINCLASS="me.liuwj.site.Application"
 HEALTH_CHECK_URL="http://127.0.0.1:8080/api/comments/stats"
 
 # resolve links - $0 may be a softlink
@@ -245,12 +245,13 @@ info() {
   echo "****************************"
   echo "$(uname -a)"
   echo
-  echo "JAVA_HOME=$JAVA_HOME"
+  echo "JAVACMD=$JAVACMD"
   echo "$("$JAVACMD" -version)"
   echo
   echo "BASEDIR=$BASEDIR"
   echo "JAVA_OPTS=$JAVA_OPTS"
   echo "APP_MAINCLASS=$APP_MAINCLASS"
+  echo "HEALTH_CHECK_URL=$HEALTH_CHECK_URL"
   echo "CLASSPATH=$CLASSPATH"
   echo "****************************"
 }
