@@ -157,7 +157,7 @@ do_stop() {
       echo "[OK]"
       rm -f "$PID_FILE"
     else
-      echo "[Failed]"
+      echo "[Timeout]"
     fi
   fi
 }
