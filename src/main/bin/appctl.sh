@@ -194,14 +194,14 @@ start() {
 }
 
 restart() {
-  if [ -n "$1" ] && [ "$1" == "--skip-if-healthy" ]; then
-    if [ -n "$HEALTH_CHECK_URL" ] && curl --silent --fail --max-time 5 "$HEALTH_CHECK_URL" > /dev/null; then
-      echo "Health check: [OK], skip restart."
-      return 0
-    fi
-  fi
-
   if [ -s "$PID_FILE" ] && ps -p "$(cat "$PID_FILE")" > /dev/null; then
+    if [ -n "$1" ] && [ "$1" == "--skip-if-healthy" ]; then
+      if [ -n "$HEALTH_CHECK_URL" ] && curl --silent --fail --max-time 5 "$HEALTH_CHECK_URL" > /dev/null; then
+        echo "Health check: [OK], skip restart."
+        return 0
+      fi
+    fi
+
     do_stop
   fi
 
