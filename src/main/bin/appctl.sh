@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # ----------------------------------------------------------------------------
 #  Copyright 2022 Vincent Lau.
 #
@@ -144,14 +144,14 @@ do_start() {
 
 do_stop() {
   echo "Stopping application $APP_MAINCLASS... (pid=$(cat "$PID_FILE"))"
-  echo "[kill -15]\c"
+  echo -n "[kill -15]"
   kill -15 "$(cat "$PID_FILE")"
 
   if wait_for_stop; then
     echo "[OK]"
     rm -f "$PID_FILE"
   else
-    echo "[kill -9]\c"
+    echo -n "[kill -9]"
     kill -9 "$(cat "$PID_FILE")"
 
     if wait_for_stop; then
@@ -172,7 +172,7 @@ wait_for_stop() {
     fi
 
     if [ $wait_seconds -gt 0 ]; then
-      echo ".\c"
+      echo -n "."
       sleep 1
     fi
 
